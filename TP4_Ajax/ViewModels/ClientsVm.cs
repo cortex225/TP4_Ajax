@@ -14,12 +14,16 @@ namespace TP4_Ajax.ViewModels
         [DisplayName("Nom")]
         public string Nom { get; set; }
 
+        [DisplayName("Âge")]
         public int Age { get; set; }
 
+        [DisplayName("Courriel")]
         public string Courriel { get; set; }
 
+        [DisplayName("Téléphone")]
         public string NoTelephone { get; set; }
 
+        [DisplayName("Type d'abonnement")]
         public int AbonnementId { get; set; }
         public Abonnement Abonnement { get; set; }
     }
