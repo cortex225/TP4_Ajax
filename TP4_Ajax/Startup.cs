@@ -28,7 +28,7 @@ namespace TP4_Ajax
             services.AddControllersWithViews();
 
             services.AddDbContext<TPDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("TP4_AjaxContext")));
+                    options.UseSqlServer(Configuration.GetConnectionString("MyConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
