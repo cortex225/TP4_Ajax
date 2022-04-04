@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using TP4_Ajax.Models;
 
 namespace TP4_Ajax.ViewModels
 {
-    public class ClientsVm
+    public class ClientVM
     {
         public int ClientId { get; set; }
 
@@ -21,10 +22,12 @@ namespace TP4_Ajax.ViewModels
         public string Courriel { get; set; }
 
         [DisplayName("Téléphone")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:(###) ###-####}")]
         public string NoTelephone { get; set; }
 
         [DisplayName("Type d'abonnement")]
         public int AbonnementId { get; set; }
+        
         public Abonnement Abonnement { get; set; }
     }
 }

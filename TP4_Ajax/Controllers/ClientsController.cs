@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using TP4_Ajax.Data;
 using TP4_Ajax.Models;
+using TP4_Ajax.ViewModels;
 
 namespace TP4_Ajax.Controllers
 {
@@ -19,11 +17,29 @@ namespace TP4_Ajax.Controllers
             _context = context;
         }
 
-        // GET: Clients
+        [HttpGet]
+        [Route("{controller}/{action}")]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Clients.ToListAsync());
+            var vm = _context.Clients
+                .Include(c => c.Abonnement)
+                .Select(client => new ClientVM()
+                {
+                    ClientId = client.ClientId,
+                    Nom = client.Nom,
+                    Age = client.Age,
+                    Courriel = client.Courriel,
+                    NoTelephone = client.NoTelephone,
+                    AbonnementId = client.AbonnementId,
+                    Abonnement = client.Abonnement
+
+                })
+                .ToList();
+
+            return View(vm);
         }
+
+
 
         // GET: Clients/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -42,6 +58,7 @@ namespace TP4_Ajax.Controllers
 
             return View(client);
         }
+
 
         // GET: Clients/Create
         public IActionResult Create()

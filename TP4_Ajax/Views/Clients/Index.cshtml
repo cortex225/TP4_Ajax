@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TP4_Ajax.Models.Client>
+﻿@model IEnumerable<ClientVM>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,7 +7,7 @@
 <h1>Liste des clients</h1>
 
 <p>
-    <a class="btn bg-primary text-light" asp-action="Create">Create New</a>
+    <a class="btn bg-primary text-light" asp-action="Create">Créer un client</a>
 </p>
 <table class="table">
     <thead>
@@ -46,7 +46,7 @@
             </td>
             <td>
                
-                <a class="btn bg-danger text-light" asp-action="Delete" asp-route-id="@item.ClientId">Delete</a>
+                <a class="btn bg-danger text-light" asp-action="Delete" asp-route-id="@item.ClientId">Supprimer</a>
             </td>
         </tr>
 }
