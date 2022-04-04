@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using TP4_Ajax.Data;
 
-namespace TP3.Seeder
+namespace TP4_Ajax.Seeder
 {
     public class DbContextFactory  // : IDesignTimeDbContextFactory<Exercice3_ModeleEFCoreDBContext>
     {
