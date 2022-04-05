@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TP4_Ajax.Data;
@@ -23,7 +25,7 @@ namespace TP4_Ajax.Controllers
         {
             var vm = _context.Clients
                 .Include(c => c.Abonnement)
-                .Select(client => new ClientVM()
+                .Select(client => new ClientIndexVM()
                 {
                     ClientId = client.ClientId,
                     Nom = client.Nom,
@@ -41,97 +43,64 @@ namespace TP4_Ajax.Controllers
 
 
 
-        // GET: Clients/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var client = await _context.Clients
-                .FirstOrDefaultAsync(m => m.ClientId == id);
-            if (client == null)
-            {
-                return NotFound();
-            }
-
-            return View(client);
-        }
 
 
-        // GET: Clients/Create
+
+        [HttpGet]
+        [Route("{controller}/{action}")]
         public IActionResult Create()
         {
-            return View();
-        }
+            ClientCreateVM vm = new ClientCreateVM();
 
-        // POST: Clients/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClientId,Nom,Age,Courriel,NoTelephone")] Client client)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(client);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(client);
-        }
-
-        // GET: Clients/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var client = await _context.Clients.FindAsync(id);
-            if (client == null)
-            {
-                return NotFound();
-            }
-            return View(client);
-        }
-
-        // POST: Clients/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClientId,Nom,Age,Courriel,NoTelephone")] Client client)
-        {
-            if (id != client.ClientId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+            vm.ListeAbonnementSelectItems = _context.Abonnements
+                .Select(a => new SelectListItem()
                 {
-                    _context.Update(client);
+                    Text = a.Type,
+                    Value = a.AbonnementId.ToString()
+                })
+                .ToList();
+
+
+            return View(vm);
+        }
+
+
+
+        [HttpPost]
+        [Route("{controller}/{action}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ClientCreateVM vm)
+        {
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+                    Client nouveauClient = new Client();
+                    nouveauClient.ClientId = vm.ClientId;
+                    nouveauClient.Courriel = vm.Courriel;
+                    nouveauClient.Nom = vm.Nom;
+                    nouveauClient.NoTelephone = vm.NoTelephone;
+                    nouveauClient.Age = vm.Age;
+                    nouveauClient.AbonnementId = vm.AbonnementId;
+
+
+
+
+                    _context.Clients.Add(nouveauClient);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClientExists(client.ClientId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(vm);
             }
-            return View(client);
+            catch (Exception)
+
+            {
+                return View("Error");
+            }
         }
+
+
 
         // GET: Clients/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -151,7 +120,7 @@ namespace TP4_Ajax.Controllers
             return View(client);
         }
 
-        // POST: Clients/Delete/5
+       
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

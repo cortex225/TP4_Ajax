@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using TP4_Ajax.Models;
 
 namespace TP4_Ajax.ViewModels
 {
-    public class ClientVM
+    public class ClientIndexVM
     {
         public int ClientId { get; set; }
 
@@ -22,12 +23,11 @@ namespace TP4_Ajax.ViewModels
         public string Courriel { get; set; }
 
         [DisplayName("Téléphone")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:(###) ###-####}")]
+        [DisplayFormat(DataFormatString = "{0:(###) ###-####}")]
         public string NoTelephone { get; set; }
 
         [DisplayName("Type d'abonnement")]
         public int AbonnementId { get; set; }
-        
         public Abonnement Abonnement { get; set; }
     }
 }

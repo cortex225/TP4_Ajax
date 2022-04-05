@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ClientVM>
+﻿@model IEnumerable<ClientIndexVM>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,10 +7,20 @@
 <h1>Liste des clients</h1>
 
 <p>
-    <a class="btn bg-primary text-light" asp-action="Create">Créer un client</a>
+    <a class="btn bg-primary text-light" id="btnCreate" asp-action="Create">Créer un client</a>
 </p>
-<table class="table">
-    <thead>
+
+<div id="Formulaire">
+    @*Va contenir le formulaire*@
+</div>
+
+<div id="btnSaveDelete">
+    <button class="Create btn bg-primary text-light" asp-action="Create">Sauvegarder</button>
+    <a class="btnAnnuler btn bg-danger text-light" asp-action="Index">Annuler</a>
+</div>
+
+<table class="table table-striped">
+    <thead class="align-content-center">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Nom)
@@ -23,6 +33,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NoTelephone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Abonnement)
             </th>
             <th>
                 Action
@@ -45,10 +58,66 @@
                 @Html.DisplayFor(modelItem => item.NoTelephone)
             </td>
             <td>
-               
+                @Html.DisplayFor(modelItem => item.Abonnement.Type)
+            </td>
+            <td>
+
                 <a class="btn bg-danger text-light" asp-action="Delete" asp-route-id="@item.ClientId">Supprimer</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+
+@section scripts{ 
+
+    <script>
+     //Ici la div btnSaveDelete est caché
+        $("#btnSaveDelete").hide();
+        
+
+        //Fonction du bouton create
+      $(document).ready(function () {
+          $('#btnCreate').click(function (e) {
+            e.preventDefault();
+
+           $(".btnSaveDelete").show();
+
+            var token = $('input[name=__RequestVerificationToken]').val();
+            var pageObj = {};//je recupere la valeur de tous les éléments du formulaire
+            pageObj.Nom = $("#Nom").val();
+            pageObj.Age = $("#Age").val();
+            pageObj.Courriel = $("#Courriel").val();
+            pageObj.NoTelephone = $("#NoTelephone").val();
+            pageObj.AbonnementId = $("#AbonnementId").val();
+
+
+
+               $.ajax({
+                   type: "POST",
+
+                   beforeSend: function (xhr) {
+                       xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());//Verification du ForgerinToken
+                   },
+                   data: {
+                        __RequestVerificationToken: token,
+                       page: pageObj
+
+                   },
+                   //Quand l 'appel ajax fonctionne on active le bouton create et on recharge le Formulaire de la vue 
+                   success: function () {
+                       $(".Create").attr("disabled", true);
+                       $("#Formulaire").load('@Url.Action("Create","Clients")');
+
+
+                   },
+                   error: function () {
+                       alert("Ajax call failed");
+                   }
+               });
+
+       })
+    </script>
+}
