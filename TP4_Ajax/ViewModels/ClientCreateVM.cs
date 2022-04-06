@@ -28,7 +28,7 @@ namespace TP4_Ajax.ViewModels
         public string Courriel { get; set; }
 
         [DisplayName("Téléphone")]
-        [DisplayFormat(DataFormatString = "{0:(###) ###-####}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:(###) ###-####}")]
         [StringLength(10)]
         public string NoTelephone { get; set; }
 

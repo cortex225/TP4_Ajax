@@ -120,20 +120,20 @@ namespace TP4_Ajax.Controllers
             return View(client);
         }
 
-       
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var client = await _context.Clients.FindAsync(id);
-            _context.Clients.Remove(client);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool ClientExists(int id)
+        [HttpPost, ActionName("DeleteClient")]
+        public async Task<JsonResult> DeleteClient(int id)
         {
-            return _context.Clients.Any(e => e.ClientId == id);
+            bool result = false;
+            var client = await _context.Clients.FindAsync(id);
+            if (client != null)
+            {
+                _context.Clients.Remove(client);
+                _context.SaveChanges();
+                result = true;
+            }
+
+            return Json(result);
         }
     }
 }

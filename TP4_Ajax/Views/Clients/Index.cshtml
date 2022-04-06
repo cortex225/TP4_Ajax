@@ -15,7 +15,7 @@
 </div>
 
 <div id="btnSaveDelete">
-    <button class="Create btn bg-primary text-light" asp-action="Create">Sauvegarder</button>
+    <button class="Save btn bg-primary text-light" asp-action="Create">Sauvegarder</button>
     <a class="btnAnnuler btn bg-danger text-light" asp-action="Index">Annuler</a>
 </div>
 
@@ -62,7 +62,7 @@
             </td>
             <td>
 
-                <a class="btn bg-danger text-light" asp-action="Delete" asp-route-id="@item.ClientId">Supprimer</a>
+                <a class="btnSupprimer btn bg-danger text-light" asp-action="Delete" asp-route-id="@item.ClientId">Supprimer</a>
             </td>
         </tr>
 }
@@ -75,14 +75,14 @@
     <script>
      //Ici la div btnSaveDelete est caché
         $("#btnSaveDelete").hide();
-        
+
 
         //Fonction du bouton create
       $(document).ready(function () {
           $('#btnCreate').click(function (e) {
             e.preventDefault();
 
-           $(".btnSaveDelete").show();
+           $("#btnSaveDelete").show();
 
             var token = $('input[name=__RequestVerificationToken]').val();
             var pageObj = {};//je recupere la valeur de tous les éléments du formulaire
@@ -106,9 +106,9 @@
                        page: pageObj
 
                    },
-                   //Quand l 'appel ajax fonctionne on active le bouton create et on recharge le Formulaire de la vue 
+                   //Quand l 'appel ajax fonctionne on active le bouton create et on recharge le Formulaire de la vue
                    success: function () {
-                       $(".Create").attr("disabled", true);
+                       $(".Save").attr("disabled", true);
                        $("#Formulaire").load('@Url.Action("Create","Clients")');
 
 
@@ -117,6 +117,33 @@
                        alert("Ajax call failed");
                    }
                });
+
+         //Fonction du bouton supprimer
+              $('.btnSupprimer').click(function (e) {
+            e.preventDefault();
+            //id recupere le Id de la ligne selectionnee
+            var id = $(this).attr("Id");
+
+            var message = confirm("Voulez-vous vraiment supprimer ce client ?");
+
+            if (message) {
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteClient")',//Un post est envoyé à l'action DeleteClient dans le controller
+
+                    data: { id: id },//on compare les id
+                    dataType: "json",
+                    success: function () {
+                        setTimeout(function () { location.reload(); }, 1000);
+                    },
+                    error: function () {
+                        alert("Une erreur s'est produite lors de la suppression du client");
+                    }
+                });
+            }
+        })
+    });
 
        })
     </script>
