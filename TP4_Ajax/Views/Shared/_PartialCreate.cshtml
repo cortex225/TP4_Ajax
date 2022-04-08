@@ -1,0 +1,51 @@
+﻿
+@model TP4_Ajax.ViewModels.ClientCreateVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Créer un nouveu client</h1>
+
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Nom" class="control-label"></label>
+        <input asp-for="Nom" class="form-control" />
+        <span asp-validation-for="Nom" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Age" class="control-label"></label>
+        <input asp-for="Age" class="form-control" />
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Courriel" class="control-label"></label>
+        <input asp-for="Courriel" class="form-control" />
+        <span asp-validation-for="Courriel" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NoTelephone" class="control-label"></label>
+        <input asp-for="NoTelephone" class="form-control" />
+        <span asp-validation-for="NoTelephone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AbonnementId" class="control-label"></label>
+
+        <select asp-for="AbonnementId" asp-items="@Model.ListeAbonnementSelectItems" class="form-control">
+            <option value="" disabled="disabled">Sélectionner un sport</option>
+        </select>
+        <span asp-validation-for="AbonnementId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Sauvegarder" class="btn btn-primary" />
+        <a class="btn bg-danger" asp-action="Index">Annuler</a>
+    </div>
+</form>
+
+
+
+@section Scripts {}
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+

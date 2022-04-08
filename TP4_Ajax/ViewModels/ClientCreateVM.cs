@@ -19,7 +19,7 @@ namespace TP4_Ajax.ViewModels
 
         [DisplayName("Âge")]
         [Required(ErrorMessage = "Ce champ doit être rempli.")]
-        [Range(20,75,ErrorMessage = "Votre  âge doir être compris entre 20 et 75 ans.")]
+        [Range(20, 75, ErrorMessage = "Votre  âge doir être compris entre 20 et 75 ans.")]
         public int Age { get; set; }
 
         [DisplayName("Courriel")]
@@ -30,7 +30,13 @@ namespace TP4_Ajax.ViewModels
         [DisplayName("Téléphone")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:(###) ###-####}")]
         [StringLength(10)]
-        public string NoTelephone { get; set; }
+        public string NoTelephone { get ; set; }
+
+        public void NoTelephoneFormat()
+        {
+            string.Format("{0:(###) ###-####}", NoTelephone);
+        }
+
 
         [DisplayName("Type d'abonnement")]
         [Required(ErrorMessage = "Ce champ doit être rempli.")]

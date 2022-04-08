@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<ClientIndexVM>
+@inject IAntiforgery AntiForgery;
 
 @{
     ViewData["Title"] = "Index";
@@ -14,10 +15,7 @@
     @*Va contenir le formulaire*@
 </div>
 
-<div id="btnSaveDelete">
-    <button class="Save btn bg-primary text-light" asp-action="Create">Sauvegarder</button>
-    <a class="btnAnnuler btn bg-danger text-light" asp-action="Index">Annuler</a>
-</div>
+
 
 <table class="table table-striped">
     <thead class="align-content-center">
@@ -43,38 +41,40 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Courriel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NoTelephone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Abonnement.Type)
-            </td>
-            <td>
-
-                <a class="btnSupprimer btn bg-danger text-light" asp-action="Delete" asp-route-id="@item.ClientId">Supprimer</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Courriel)
+                </td>
+                <td>
+                   
+                    @String.Format("{0:(###) ###-####}",item.NoTelephone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Abonnement.Type)
+                </td>
+                <td>
+                    <a class="btnSupprimer btn bg-danger text-light" id="@item.ClientId" asp-action="DeleteClient" asp-route-id="">Supprimer</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
 
-@section scripts{ 
+@section scripts{
 
     <script>
      //Ici la div btnSaveDelete est caché
         $("#btnSaveDelete").hide();
+
 
 
         //Fonction du bouton create
@@ -95,7 +95,7 @@
 
 
                $.ajax({
-                   type: "POST",
+                   type: "GET",
 
                    beforeSend: function (xhr) {
                        xhr.setRequestHeader("XSRF-TOKEN",
@@ -108,7 +108,7 @@
                    },
                    //Quand l 'appel ajax fonctionne on active le bouton create et on recharge le Formulaire de la vue
                    success: function () {
-                       $(".Save").attr("disabled", true);
+                       $("#btnCreate").attr("disabled", true);
                        $("#Formulaire").load('@Url.Action("Create","Clients")');
 
 
@@ -118,8 +118,11 @@
                    }
                });
 
-         //Fonction du bouton supprimer
-              $('.btnSupprimer').click(function (e) {
+         })
+
+
+          //Fonction du bouton supprimer
+          $('.btnSupprimer').click(function (e) {
             e.preventDefault();
             //id recupere le Id de la ligne selectionnee
             var id = $(this).attr("Id");
@@ -144,7 +147,5 @@
             }
         })
     });
-
-       })
     </script>
 }
