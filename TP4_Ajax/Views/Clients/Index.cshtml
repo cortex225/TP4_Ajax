@@ -5,7 +5,6 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Liste des clients</h1>
 
 <p>
     <a class="btn bg-primary text-light" id="btnCreate" asp-action="Create">Créer un client</a>
@@ -15,6 +14,7 @@
     @*Va contenir le formulaire*@
 </div>
 
+<h1>Liste des clients</h1>
 
 
 <table class="table table-striped">
@@ -36,7 +36,7 @@
                 @Html.DisplayNameFor(model => model.Abonnement)
             </th>
             <th>
-                Action
+                Actions
             </th>
         </tr>
     </thead>
@@ -54,8 +54,8 @@
                     @Html.DisplayFor(modelItem => item.Courriel)
                 </td>
                 <td>
-                   
-                    @String.Format("{0:(###) ###-####}",item.NoTelephone)
+
+                    @String.Format("{0:(###) ###-####}", item.NoTelephone)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Abonnement.Type)

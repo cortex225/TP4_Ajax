@@ -25,7 +25,7 @@ namespace TP4_Ajax.Controllers
      
         public async Task<IActionResult> Index()
         {
-            
+
 
             var vm = _context.Clients
                 .Include(c => c.Abonnement)
@@ -41,6 +41,7 @@ namespace TP4_Ajax.Controllers
 
 
                 })
+                .OrderByDescending(c => c.ClientId)
                 .ToList();
           
 
