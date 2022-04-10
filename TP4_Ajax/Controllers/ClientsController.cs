@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TP4_Ajax.Data;
 using TP4_Ajax.Models;
@@ -22,7 +21,7 @@ namespace TP4_Ajax.Controllers
 
         [HttpGet]
         [Route("{controller}/{action}")]
-     
+
         public async Task<IActionResult> Index()
         {
 
@@ -43,7 +42,7 @@ namespace TP4_Ajax.Controllers
                 })
                 .OrderByDescending(c => c.ClientId)
                 .ToList();
-          
+
 
             return View(vm);
         }
@@ -66,7 +65,7 @@ namespace TP4_Ajax.Controllers
                 .ToList();
 
 
-            return PartialView("_PartialCreate",vm);
+            return PartialView("_PartialCreate", vm);
         }
 
 
@@ -96,7 +95,7 @@ namespace TP4_Ajax.Controllers
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-                return PartialView("_PartialCreate",vm);
+                return PartialView("_PartialCreate", vm);
             }
             catch (Exception)
 

@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using TP4_Ajax.Models;
 
 namespace TP4_Ajax.ViewModels
@@ -30,7 +28,7 @@ namespace TP4_Ajax.ViewModels
         [DisplayName("Téléphone")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:(###) ###-####}")]
         [StringLength(10)]
-        public string NoTelephone { get ; set; }
+        public string NoTelephone { get; set; }
 
         public void NoTelephoneFormat()
         {
